@@ -67,7 +67,7 @@ def checkExamResult():
        
         # if not image or not image.annotations
         avg_score, score_desc = evaluate_score(anno, anno_gt)
-        results.append({'id': anno['id'], 'score': avg_score, 'score_desc': score_desc}) 
+        results.append({'id': anno['id'], 'score': avg_score, 'score_desc': score_desc, 'annotations': image.annotations}) 
 
-        print(results)
+    print(results)
     return success(results)
