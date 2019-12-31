@@ -1,4 +1,5 @@
 from . import db
+from datetime import datetime
 
 
 class User(db.Model):
@@ -28,3 +29,12 @@ class UltrasonicImage(db.Model):
         return '<UltrasonicImage %r>' % self.image_path 
 
 
+class ExamResult(db.Model):
+    __tablename__ = "ExamResults"
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
+    score = db.Column(db.Float, default = 0)
+    exam_date = db.Column(db.DateTime, default = datetime.now)
+
+    def __repr__(self):
+        return '<ExamResults (%d, %f)>'.format(user_id, score) 

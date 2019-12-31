@@ -2,7 +2,7 @@ from . import api
 import json
 from flask import request
 from ..utils.evaluate import evaluate_score
-from ..models import User, UltrasonicImage
+from ..models import User, UltrasonicImage, ExamResult
 from sqlalchemy.sql import text
 from .. import db
 
@@ -52,11 +52,13 @@ def getExamList():
 @api.route('/checkExamResult', methods=['POST'])
 def checkExamResult():
     data = request.get_data()
-    annotations = json.loads(data, encoding='utf-8')
+    request_data = json.loads(data, encoding='utf-8')
     # print(annotations)
 
+    user_id = request_data['user_id']
+
     results = []
-    for anno in annotations:
+    for anno in request_data['annotations']:
         image = UltrasonicImage.query.filter_by(id=anno['id']).first()
         if not image:
             return fail('no image with id = ' + str(anno['id']))
@@ -69,5 +71,14 @@ def checkExamResult():
         avg_score, score_desc = evaluate_score(anno, anno_gt)
         results.append({'id': anno['id'], 'score': avg_score, 'score_desc': score_desc, 'annotations': image.annotations}) 
 
-    print(results)
+    # insert into table
+    exam = ExamResult(user_id=user_id, score=avg_score)
+    db.session.add(exam)
+    try:
+        db.session.commit()
+    except Exception as ex:
+        db.session.rollback()
+        return fail(ex.error_string)
+
+    # print(results)
     return success(results)
