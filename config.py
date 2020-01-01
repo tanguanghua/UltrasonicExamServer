@@ -1,5 +1,6 @@
 class Config(object):
     DEBUG = False
+    NUM_TESTS = 10
     SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/ultrasonic'
 
 

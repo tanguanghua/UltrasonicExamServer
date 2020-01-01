@@ -71,6 +71,6 @@ def load_from_json(anno_json, root_path, prefix):
 if __name__ == "__main__":
     app = create_app('dev')
 
-    image_path=r'G:\MyProject\UltrasonicProject\UltasonicExam\Server\app\static\five'
+    image_path=r'G:\MyProject\UltrasonicProject\UltasonicExam\UltrasonicExamServer\app\static\黄文兰   22周    12月1号'
     with app.app_context() as app_ctx:
         add_images(image_path)

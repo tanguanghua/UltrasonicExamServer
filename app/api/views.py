@@ -6,6 +6,7 @@ from ..models import User, UltrasonicImage, ExamResult
 from sqlalchemy.sql import text
 from .. import db
 
+
 def success(result):
     ret = {'status': 1, 'result': result}
     return json.dumps(ret)
@@ -38,14 +39,15 @@ def login():
 @api.route('/getExamList')
 def getExamList():
     # only select part of the information
-    images = db.session.query(UltrasonicImage.id, UltrasonicImage.image_path).order_by(text('rand()')).limit(3)
+    # print(db.NUM_TESTS)
+    images = db.session.query(UltrasonicImage.id, UltrasonicImage.image_path).order_by(text('rand()')).limit(db.NUM_TESTS)
     # print(images)
     # images = UltrasonicImage.query.order_by(text('rand()')).limit(3)
     exam_list = []
     for image in images:
         exam = {'id': image.id, 'image_path': image.image_path}
         exam_list.append(exam)
-    # exam_list = [{'id': 1, 'image_path': 'static/test1.jpg'}, {'id': 2, 'image_path': 'static/test2.jpg'}, {'id': 3, 'image_path': 'static/test3.jpg'}]
+    # exam_list = [{'id': 1, 'image_path': 'static/five/1.jpg'}, {'id': 2, 'image_path': 'static/five/2.jpg'}, {'id': 3, 'image_path': 'static/five/3.jpg'}]
     return success(exam_list)
 
 
