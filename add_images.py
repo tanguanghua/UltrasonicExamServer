@@ -6,6 +6,11 @@ from app.models import UltrasonicImage
 import json
 
 def add_images(image_path):
+    image_path = os.path.abspath(image_path)
+    if not os.path.exists(image_path):
+        print('image path does not exist: ' + image_path)
+        return
+
     # whether is the same as the server
     server_root = os.path.dirname(os.path.abspath(__name__))
     server_root = os.path.join(server_root, 'app')
