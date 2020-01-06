@@ -1,9 +1,9 @@
 import os
-import sys
 
 from app import create_app, db
 from app.models import UltrasonicImage
 import json
+
 
 def add_images(image_path):
     image_path = os.path.abspath(image_path)
@@ -31,7 +31,6 @@ def add_images(image_path):
     except Exception as ex:
         db.session.rollback()
         print(ex)
-    
 
 
 def add_images_impl(image_path, prefix):
@@ -64,8 +63,8 @@ def load_from_json(anno_json, root_path, prefix):
             print('image does not exist: ' + path)
             continue
 
-        iamge = UltrasonicImage(image_path=prefix + '/' + image_name, 
-                                body_part=annos['bodyPart'], 
+        iamge = UltrasonicImage(image_path=prefix + '/' + image_name,
+                                body_part=annos['bodyPart'],
                                 annotations=json.dumps(annos))
 
         images.append(iamge)
@@ -76,6 +75,6 @@ def load_from_json(anno_json, root_path, prefix):
 if __name__ == "__main__":
     app = create_app('dev')
 
-    image_path=r'G:\MyProject\UltrasonicProject\UltasonicExam\UltrasonicExamServer\app\static\黄文兰   22周    12月1号'
+    image_path = r'G:\MyProject\UltrasonicProject\UltasonicExam\UltrasonicExamServer\app\static\黄文兰   22周    12月1号'
     with app.app_context() as app_ctx:
         add_images(image_path)

@@ -31,16 +31,17 @@ def login():
 
     if user.password != login_info['password']:
         return fail('password is incorrect')
-    
-    ret = {'id': user.id, 'user_name': user.user_name, 'email': user.email, 'mobile': user.mobile} 
+
+    ret = {'id': user.id, 'user_name': user.user_name, 'email': user.email, 'mobile': user.mobile}
     return success(ret)
-    
+
 
 @api.route('/getExamList')
 def getExamList():
     # only select part of the information
     # print(db.NUM_TESTS)
-    images = db.session.query(UltrasonicImage.id, UltrasonicImage.image_path).order_by(text('rand()')).limit(db.NUM_TESTS)
+    images = db.session.query(UltrasonicImage.id, UltrasonicImage.image_path).order_by(text('rand()')).limit(
+        db.NUM_TESTS)
     # print(images)
     # images = UltrasonicImage.query.order_by(text('rand()')).limit(3)
     exam_list = []
@@ -65,15 +66,15 @@ def checkExamResult():
         if not image:
             return fail('no image with id = ' + str(anno['id']))
 
-        
         # anno_user = anno['annotations']
         anno_gt = json.loads(image.annotations, encoding='utf-8')
-       
+
         # if not image or not image.annotations
         avg_score, score_desc = evaluate_score(anno, anno_gt)
-        results.append({'id': anno['id'], 'score': avg_score, 'score_desc': score_desc, 'annotations': image.annotations}) 
+        results.append(
+            {'id': anno['id'], 'score': avg_score, 'score_desc': score_desc, 'annotations': image.annotations})
 
-    # insert into table
+        # insert into table
     exam = ExamResult(user_id=user_id, score=avg_score)
     db.session.add(exam)
     try:
