@@ -1,31 +1,12 @@
 import json
 from flask import request, Blueprint
 from ..utils.evaluate import evaluate_score
-from app.models.models import User, UltrasonicImage, ExamResult
+from app.models.models import UltrasonicImage, ExamResult
 from sqlalchemy.sql import text
 from app.models import db
 from app.utils.warp import success, fail
 
 views = Blueprint('api', __name__, url_prefix='/api')
-
-
-@views.route('/login', methods=['POST'])
-def login():
-    data = request.get_data()
-    login_info = json.loads(data, encoding='utf-8')
-
-    if 'user_name' not in login_info or 'password' not in login_info:
-        return fail('login information is in bad format')
-
-    user = User.query.filter_by(user_name=login_info['user_name']).first()
-    if not user:
-        return fail(login_info['user_name'] + ' does not exist')
-
-    if user.password != login_info['password']:
-        return fail('password is incorrect')
-
-    ret = {'id': user.id, 'user_name': user.user_name, 'email': user.email, 'mobile': user.mobile}
-    return success(ret)
 
 
 @views.route('/getExamList')

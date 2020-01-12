@@ -11,6 +11,8 @@ class User(db.Model):
     mobile = db.Column(db.String(16), unique=True)
     # md5 hash
     password = db.Column(db.String(32), nullable=False)
+    # 1为root，2为admin，3为用户
+    user_type = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return '<User %r>' % self.user_name
