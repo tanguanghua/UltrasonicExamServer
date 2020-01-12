@@ -1,7 +1,7 @@
 import os
-
-from app import create_app, db
-from app.models import UltrasonicImage
+from app import create_app
+from app.models import db
+from app.models.models import UltrasonicImage
 import json
 
 

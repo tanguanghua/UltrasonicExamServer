@@ -1,23 +1,15 @@
-from . import api
 import json
-from flask import request
+from flask import request, Blueprint
 from ..utils.evaluate import evaluate_score
-from ..models import User, UltrasonicImage, ExamResult
+from app.models.models import User, UltrasonicImage, ExamResult
 from sqlalchemy.sql import text
-from .. import db
+from app.models import db
+from app.utils.warp import success, fail
+
+views = Blueprint('api', __name__, url_prefix='/api')
 
 
-def success(result):
-    ret = {'status': 1, 'result': result}
-    return json.dumps(ret)
-
-
-def fail(error_string):
-    ret = {'status': 0, 'error': error_string}
-    return json.dumps(ret)
-
-
-@api.route('/login', methods=['POST'])
+@views.route('/login', methods=['POST'])
 def login():
     data = request.get_data()
     login_info = json.loads(data, encoding='utf-8')
@@ -36,7 +28,7 @@ def login():
     return success(ret)
 
 
-@api.route('/getExamList')
+@views.route('/getExamList')
 def getExamList():
     # only select part of the information
     # print(db.NUM_TESTS)
@@ -52,7 +44,7 @@ def getExamList():
     return success(exam_list)
 
 
-@api.route('/checkExamResult', methods=['POST'])
+@views.route('/checkExamResult', methods=['POST'])
 def checkExamResult():
     data = request.get_data()
     request_data = json.loads(data, encoding='utf-8')

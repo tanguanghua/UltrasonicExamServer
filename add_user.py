@@ -1,5 +1,6 @@
-from app import create_app, db
-from app.models import User
+from app import create_app
+from app.models import db
+from app.models.models import User
 import hashlib
 
 app = create_app('dev')
