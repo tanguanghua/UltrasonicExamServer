@@ -1,11 +1,11 @@
-from flask import request, Blueprint
+from flask import request, Blueprint, session
 from app.models.login import post_login
 from app.utils.warp import success, fail
 
-login = Blueprint('api', __name__, url_prefix='/login')
+login_page = Blueprint('login', __name__, url_prefix='/login')
 
 
-@login.route('', methods=['POST'])
+@login_page.route('', methods=['POST'])
 def login():
     data = request.json
     username = data.get('user_name')
@@ -16,6 +16,8 @@ def login():
         return fail('login information is in bad format')
 
     user = post_login(username, password)
+
+    session['type'] = user.user_type
 
     ret = {
         'id': user.id,

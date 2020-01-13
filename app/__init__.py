@@ -11,7 +11,6 @@ parser.add_argument('--config', type=str, default='wjq-dev', help='Please offer 
 def create_app() -> Flask:
     args = parser.parse_args()
     config = args.config
-    print(config)
 
     # 获取实例、加载配置文件
     app = Flask(__name__)
@@ -20,7 +19,7 @@ def create_app() -> Flask:
     app.config.from_object(configure)
 
     # 连接数据库
-    connect_db(app=app, num=configure.NUM_TESTS)
+    connect_db(app=app)
 
     # blueprint
     register(app)

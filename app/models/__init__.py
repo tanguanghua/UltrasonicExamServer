@@ -5,10 +5,9 @@ from sqlalchemy.exc import SQLAlchemyError
 db = SQLAlchemy()
 
 
-def connect_db(app: Flask, num=10):
+def connect_db(app: Flask):
     try:
         db.init_app(app)
-        db.NUM_TESTS = num
         app.logger.info('Connect db successfully')
     except BaseException as e:
         app.logger.error('Failed to connect db', e)

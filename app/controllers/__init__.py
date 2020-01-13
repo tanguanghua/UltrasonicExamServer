@@ -13,5 +13,5 @@ def register(app: Flask):
         if not os.path.isdir(path) and path != __file__:
             temp = item.split('.')[0]
             module = importlib.import_module(f'app.controllers.{temp}')
-            auto_blueprint = module.__dict__[temp]
+            auto_blueprint = module.__dict__[f'{temp}_page']
             app.register_blueprint(auto_blueprint)

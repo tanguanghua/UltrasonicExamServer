@@ -35,7 +35,7 @@ class ExamResult(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     score = db.Column(db.Float, default=0)
     exam_date = db.Column(db.DateTime, default=datetime.now)
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __repr__(self):
         return '<ExamResults (%d, %f)>'.format(self.user_id, self.score)

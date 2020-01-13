@@ -1,6 +1,5 @@
 from functools import wraps
 from flask import session
-from app.utils.errors import errors
 from app.utils.warp import fail
 
 
@@ -10,7 +9,7 @@ class Permission:
     """
     ROOT = 0x1
     ADMIN = 0x2
-    DESIGNER = 0x4
+    USER = 0x4
 
     ROLE_MAP = {
         1: 0x1,
@@ -25,7 +24,7 @@ def auth_require(role):
         def wrapper(*args, **kwargs):
             user_role = session['type']
             if Permission.ROLE_MAP[int(user_role)] & role != Permission.ROLE_MAP[int(user_role)]:
-                return fail(errors['403']), 401
+                return fail('You don\'t have auth')
             return func(*args, **kwargs)
 
         return wrapper
