@@ -1,25 +1,27 @@
+import argparse
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from app.models import connect_db
+from app.controllers import register
 from config import mapping_config
 
+parser = argparse.ArgumentParser(description='manual to this script')
+parser.add_argument('--config', type=str, default='wjq-dev', help='Please offer config filename')
 
-db = SQLAlchemy()
 
-def create_app(config_name):
+def create_app() -> Flask:
+    args = parser.parse_args()
+    config = args.config
+
+    # 获取实例、加载配置文件
     app = Flask(__name__)
-    config = mapping_config[config_name]
-    app.config.from_object(config)
 
+    configure = mapping_config[config]
+    app.config.from_object(configure)
 
-    # database
-    db.init_app(app)
-    if config.NUM_TESTS:
-        db.NUM_TESTS = config.NUM_TESTS
-    else:
-        db.NUM_TESTS = 10
+    # 连接数据库
+    connect_db(app=app)
 
     # blueprint
-    from .api import api as api_blueprint
-    app.register_blueprint(api_blueprint)
+    register(app)
 
     return app

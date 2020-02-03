@@ -1,13 +1,13 @@
-from app import create_app, db
-from app.models import User
+from app import create_app
+from app.models import db
+from app.models.models import User
 import hashlib
-
 
 app = create_app('dev')
 
 user_name = 'guanghua'
 password = 'guanghua'
-password =hashlib.md5(password.encode(encoding='utf-8')).hexdigest()
+password = hashlib.md5(password.encode(encoding='utf-8')).hexdigest()
 
 with app.app_context() as app_ctx:
     guanghua = User(user_name=user_name, password=password, mobile='18684798169', email='guanghuatan@gmail.com')
