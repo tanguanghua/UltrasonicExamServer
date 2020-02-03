@@ -1,12 +1,25 @@
-from app import create_app
+from app import create_app, db 
+# from flask_script import Manager, Shell
+from flask import current_app
 
-app = create_app()
+
+app = create_app('dev')
+
+@app.route('/')
+@app.route('/index')
+def index():
+    return 'Hello world'
+
+# app_ctx = app.app_context()
+# app_ctx.push()
 
 with app.app_context() as app_ctx:
-    from app.models.models import *
+    print('app name: ' + current_app.name)
 
+    from app.models import *    
     # db.drop_all()
     db.create_all()
+# app_ctx.pop()
 
 # Add interactive project shell
 # def make_shell_context():
@@ -16,4 +29,5 @@ with app.app_context() as app_ctx:
 
 
 if __name__ == '__main__':
+    # manager.run()
     app.run()
